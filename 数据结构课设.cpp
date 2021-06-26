@@ -64,7 +64,7 @@ void print_all_dist(route &r,int start) {
 
 }
 
-//冒泡排序一下 (同时更换快排、归并等等） 
+//排序一下 (同时更换快排、归并等等） 
 int Bubble(route &r, int q[], int is) {
 	int str = sizeof(q)/sizeof(q[0]);
 	printf("%d",str);
@@ -153,7 +153,7 @@ int find_home(fire_data f,int x){
 } 
 
 float best_hit_fire(fire_data f){
-	//冒泡排序 
+	//排序后返回最小值 
 	for(int i = 0; i < VNUM - 1; i++) 
 		for(int j = i; j < VNUM - 1; j++)
 		   if(f.c[j] >= f.c[j + 1]) {
