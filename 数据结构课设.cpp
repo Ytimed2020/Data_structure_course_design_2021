@@ -38,6 +38,7 @@ typedef struct {
  float c[20] = {0.5,0,0.6,0.9,0,0,0.1,0.1,0.2,0,0.3,0,0.1,0.1,0}; 	
 }fire_data;
 
+
 typedef struct {
 	int P[VNUM];           // 辅助数组
     int Dist[VNUM];       // 存放最短路径，权值
@@ -63,6 +64,23 @@ void print_all_dist(route &r,int start) {
 	  }
 
 }
+
+//快速排序
+void Quckily_sort(fire_data &f, int low, int high) {
+    int i, j;
+    int  pivotkey;
+    f.c[16] = f.c[low]; //第一个位置放满了，后期加入的，所以放到最后 
+    pivotkey = f.c[low];
+    while (low < high)  {
+        while (f.c[high] >= pivotkey && low < high) high--; //找到第一个小于的放进来
+        f.c[low] = f.c[high];
+        while (f.c[high] <= pivotkey && low > high) low--; //找到第一个大于的放进来
+        f.c[high] = f.c[low];
+    }
+    f.c[low] = f.c[16]; //哨兵即中间那个
+    return;
+}
+
 
 //排序一下 (同时更换快排、归并等等） 
 int Bubble(route &r, int q[], int is) {
@@ -151,6 +169,9 @@ int find_home(fire_data f,int x){
 		}
 	}
 } 
+
+
+
 
 float best_hit_fire(fire_data f){
 	//排序后返回最小值 
@@ -257,12 +278,17 @@ void fire_modify(fire_data &f,int n,float k) {
 	
 }
 
+ 
 
 void fire_all(fire_data &f) {
+    FILE *fp;
+	fp = fopen("data_fire.txt","w");
     for(int i = 0; i < 15; i++) {
        if(f.b[i] == 0){
+       	fprintf(fp,"%s %s %s ","当前位置",a[i],".不存在防火器材\n");  
        	printf("当前位置%s.不存在防火器材\n",a[i]); 
 	   }else {
+	   	fprintf(fp,"%s %s %s %s %.2f","当前位置",a[i],",当前存在防火器材,","当前防火器材损耗率：",f.c[i]);  
 	   	printf("当前位置%s,当前存在防火器材，当前防火器材损耗率：%.2f\n",a[i],f.c[i]);
 	   }
 	}
