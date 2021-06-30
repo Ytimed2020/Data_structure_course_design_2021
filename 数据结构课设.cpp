@@ -38,6 +38,11 @@ typedef struct {
  float c[20] = {0.5,0,0.6,0.9,0,0,0.1,0.1,0.2,0,0.3,0,0.1,0.1,0}; 	
 }fire_data;
 
+typedef struct {
+	int base;
+	int top;
+	int person_size;
+}queue; 
 
 typedef struct {
 	int P[VNUM];           // 辅助数组
@@ -102,6 +107,7 @@ int Bubble(route &r, int q[], int is) {
     
 }
 
+
 void disaster(route &r, int start) {
 	int new_Dist[VNUM];
 	memset(new_Dist,0,15); 
@@ -138,17 +144,52 @@ void disaster(route &r, int start) {
     
 } 
 
-
+//如果我们在逃到一道门的时候，发生堵塞系统，我们遵循先进先出的原则
+//原则上，出门最多一秒走出一个人
+void stack_queue(queue &s){
+	int person =  rand() % 14 + 1; //原则上，我们最多允许十五个人同时走出一个校门 
+	//此时随机生成一批人数，然后我们开始线程弹栈
+	//我在txt格式中搞了一批人名，我们开始随机弹栈;
+	printf("正在验证.....\n您的姓名：admin\n");
+	Sleep(1000);
+	printf("此时排在您前方的人数还有%d人\n",person); 
+	s.person_size = person;
+	s.top = s.person_size;  
+	char buf[MAX_LINE];  
+	FILE *files;
+	files = fopen("C:\\Users\\杨毓栋\\Desktop\\数据结构课设\\person.txt","r");
+    int len;
+	s.base = -2;
+    printf("您大约需等待%d秒才能出站\n",s.person_size);
+   	while(fgets(buf,MAX_LINE,files) != NULL)
+    {
+    	s.base++;
+    	if(s.base == s.person_size)break;
+        len = strlen(buf);
+        buf[len-1] = '\0';  
+        printf("%s\n",buf);
+    }
+	for(int j = 1; j <= s.person_size; j++) {
+    	Sleep(1000);
+        printf("此时还剩%d人......\n",s.person_size-j);
+	}
+    printf("恭喜您，成功逃脱");
+} 
 
 void find_current_dist(route &r, int start) {
+	  queue s;
 	  printf("将为您规划最优路线......分别以一道门与八道门为例子\n\n");
-	  if( (0 <= start) && (start < VNUM) ) {
+	  int solve[2];
+	  int c = 0;
 	  	int temp[2] = {9,14}; //一道门和八道们 
+	  if( (0 <= start) && (start < VNUM) ) {
 	  	for(int i = 0; i < 2; i++) {
             int p = temp[i];
             if(r.Dist[p] == 99999){
             	printf("当前没有路可寻\n\n");
-			}else  printf("%s -> %s *****  距离：%d米远  *****\n\n", a[start], a[p], r.Dist[p]);  // 顶点sv到其它顶点的路径
+			}else {
+			 printf("%s -> %s *****  距离：%d米远  *****\n\n", a[start], a[p], r.Dist[p]);  // 顶点sv到其它顶点的路径
+	        }
 		    do
             {
                 printf("%s <- ", a[p]);
@@ -157,6 +198,24 @@ void find_current_dist(route &r, int start) {
             } while( p != start );
             printf("%s\n\n", a[p]);	
         }
+	  }
+	  int iswhat;
+	  printf("请问您想逃到一道门还是八道们？\n");
+	  printf("输入1我不确定（最短安排）——————输入2我确定\n");
+	  scanf("%d",&iswhat);
+	  if(iswhat == 1){
+	  	if(r.Dist[temp[0]] < r.Dist[temp[1]]){
+	  		printf("建议您逃到八道门\n");
+		  }else printf("建议您逃到一道们\n");
+		  printf("正在为您转移路径...请等待2秒\n");
+		  Sleep(2000);
+		  system("cls");
+		  stack_queue(s);
+	  } else {
+	  	printf("正在为您转移路径...请等待2秒\n");
+		Sleep(2000);
+		system("cls");
+		stack_queue(s);
 	  }
 }
 
