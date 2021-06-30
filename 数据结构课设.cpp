@@ -174,6 +174,8 @@ void stack_queue(queue &s){
         printf("此时还剩%d人......\n",s.person_size-j);
 	}
     printf("恭喜您，成功逃脱");
+    
+    
 } 
 
 void find_current_dist(route &r, int start) {
