@@ -1,7 +1,3 @@
-/**
- * 校园安防逃生系统
- * tips:本系统以中北大学部分地区布局为例，以便形成图
- */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -33,9 +29,8 @@ int Matrix[VNUM][VNUM] = {
 }; //邻接矩阵，查找路径 
 
 typedef struct {
-
  int  b[20] = {1,0,1,1,0,0,1,1,1,0,1,0,1,1,0}; //是否有消防器材
- float c[20] = {0.5,0,0.6,0.9,0,0,0.1,0.1,0.2,0,0.3,0,0.1,0.1,0}; 	
+ float c[20] = {0.5,0,0.6,0.9,0,0,0.1,0.1,0.2,0,0.3,0,0.1,0.1,0};
 }fire_data;
 
 typedef struct {
@@ -86,7 +81,6 @@ void Quckily_sort(fire_data &f, int low, int high) {
     return;
 }
 
-
 //排序一下 (同时更换快排、归并等等） 
 int Bubble(route &r, int q[], int is) {
 	int str = sizeof(q)/sizeof(q[0]);
@@ -106,7 +100,6 @@ int Bubble(route &r, int q[], int is) {
 	}else return q[0];
     
 }
-
 
 void disaster(route &r, int start) {
 	int new_Dist[VNUM];
@@ -370,6 +363,7 @@ void menu(){
 	printf("-----------------功能9：最佳灭火器选择地点----------------\n");
 	printf("----------------- 请输入您所需要查询的信息----------------\n");
 }
+
 void read_file() {
 	char buf[MAX_LINE];  /*缓冲区*/
     FILE *fp;            /*文件指针*/
